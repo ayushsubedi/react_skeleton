@@ -2,33 +2,42 @@ import React, { Component } from "react";
 
 class Counter extends Component {
   state = {
-    count: 1,
-    tags: []
+    value: this.props.counter.value
   };
 
-  // constructor(){
-  //   super();
-  //   this.handleIncrement = this.handleIncrement.bind(this);
-  // }
-
   render() {
+    console.log("props", this.props);
     return (
       <div>
         <span className={this.getBadgeClasses()}>{this.formatCount()}</span>
         <button
-          onClick={() => this.handleIncrement(5)}
-          className="btn btn-secondary btn-sm"
+          onClick={this.handleIncrement}
+          className="btn btn-secondary btn-sm m-2"
         >
           Increment
         </button>
-        <div>{this.renderTags()}</div>
+        <button
+          onClick={this.handleDecrement}
+          className="btn btn-secondary btn-sm m-2"
+        >
+          Decrement
+        </button>
+        <button
+          onClick={() => this.props.onDelete(this.props.counter.id)}
+          className="btn btn-secondary btn-sm"
+        >
+          Delete
+        </button>
       </div>
     );
   }
 
-  handleIncrement = product => {
-    console.log(product);
-    this.setState({ count: this.state.count + 1 });
+  handleIncrement = () => {
+    this.setState({ value: this.state.value + 1 });
+  };
+
+  handleDecrement = () => {
+    if (this.state.value === 1) this.setState({ value: this.state.value - 1 });
   };
 
   renderTags() {
@@ -44,12 +53,12 @@ class Counter extends Component {
 
   getBadgeClasses() {
     let classes = "badge m-2 badge-";
-    classes += this.state.count === 0 ? "warning" : "primary";
+    classes += this.state.value === 0 ? "warning" : "primary";
     return classes;
   }
 
   formatCount() {
-    const count = this.state.count;
+    const count = this.state.value;
     return count === 0 ? "Zero" : count;
   }
 }
